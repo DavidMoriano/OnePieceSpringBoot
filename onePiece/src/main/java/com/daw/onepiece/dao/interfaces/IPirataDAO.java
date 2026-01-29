@@ -12,4 +12,6 @@ public interface IPirataDAO {
 			int activoInt);
 
 	public int insertarPirata(String nombrePirata, String frutaDiablo, Date fecha, int idIsla, int activoInt);
+
+	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, int activoInt);
 }

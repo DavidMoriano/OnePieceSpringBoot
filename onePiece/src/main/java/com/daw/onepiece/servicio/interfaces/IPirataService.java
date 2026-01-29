@@ -11,4 +11,6 @@ public interface IPirataService {
 	ArrayList<PirataDTO> listarPiratasFiltros(Integer id, String nombrePirata, String frutaDiablo, int activoInt);
 
 	int insertarPirata(String nombrePirata, String frutaDiablo, Date fechaFiltro, int idIsla, int activoInt);
+
+	int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, int activoInt);
 }

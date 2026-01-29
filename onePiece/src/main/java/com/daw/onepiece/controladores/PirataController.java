@@ -43,11 +43,11 @@ public class PirataController {
 			@RequestParam(name = "activo", required = false) String activo, ModelMap model) {
 
 		String nombreNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
+		String frutaNUll = frutaDiablo == null || frutaDiablo.trim().isEmpty() ? null : frutaDiablo.trim();
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
 
-		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, frutaDiablo,
-				activoInt);
+		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, frutaNUll, activoInt);
 		model.addAttribute("lista", listaFiltrosPiratas);
 		return "piratas/listadoPiratas";
 	}
@@ -62,9 +62,8 @@ public class PirataController {
 	@PostMapping("/insertarPirata")
 	public String formularioInsertarPirata(@RequestParam(name = "nombre") String nombrePirata,
 			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
-			@RequestParam(name = "fechaNacimiento", required = false) String fecha, 
-			@RequestParam(name = "islas") int idIsla,
-			@RequestParam(name = "activo") String activo, ModelMap model) {
+			@RequestParam(name = "fechaNacimiento", required = false) String fecha,
+			@RequestParam(name = "islas") int idIsla, @RequestParam(name = "activo", required = false) String activo, ModelMap model) {
 
 		Date fechaFiltro = null;
 		if (fecha != null && !fecha.trim().isEmpty()) {
@@ -76,16 +75,60 @@ public class PirataController {
 			}
 		}
 
+		System.out.println("activo form: " + activo);
+
 		String frutaDiabloPosibleNull = frutaDiablo == null || frutaDiablo.trim().isEmpty() ? null : frutaDiablo.trim();
-		String nombrePirataPosibleNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
+		String nombrePirataPosibleNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null
+				: nombrePirata.trim();
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
 
-		Integer idGenerado = piratasServ.insertarPirata(nombrePirataPosibleNull, frutaDiabloPosibleNull, fechaFiltro, idIsla, activoInt);
-		
+		Integer idGenerado = piratasServ.insertarPirata(nombrePirataPosibleNull, frutaDiabloPosibleNull, fechaFiltro,
+				idIsla, activoInt);
+
 		model.addAttribute("resultado", idGenerado.toString());
 
 		return "/piratas/insertarPirata";
 	}
 
+
+	@GetMapping("/formularioActualizarPiratas")
+	public String formularioPiratas() {
+		return "/piratas/actualizarPiratas";
+	}
+	
+	@PostMapping("/formularioActualizarPiratas")
+	public String formularioBuscarPiratas(@RequestParam(name = "id", required = false) Integer id,
+			@RequestParam(name = "nombre", required = false) String nombrePirata,
+			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
+			@RequestParam(name = "activo", required = false) String activo, ModelMap model) {
+
+
+		ArrayList<DesplegableDTO> desplegableIslas = desplegables.desplegableIslas();
+		model.addAttribute("isla", desplegableIslas);
+		
+		String nombreNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
+		String frutaNUll = frutaDiablo == null || frutaDiablo.trim().isEmpty() ? null : frutaDiablo.trim();
+
+		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
+
+		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, frutaNUll, activoInt);
+		model.addAttribute("lista", listaFiltrosPiratas);
+		return "piratas/actualizarPiratas";
+	}
+		
+	@PostMapping("/actualizarPiratas")
+	public String actualizarPirata(@RequestParam(name = "id", required = false) Integer id,
+			@RequestParam(name = "nombre", required = false) String nombrePirata,
+			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
+			@RequestParam(name = "activo", required = false) String activo, ModelMap model) {
+
+		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
+		
+		int resultado = piratasServ.actualizarPirata(id, nombrePirata, frutaDiablo, activoInt);
+		
+		model.addAttribute("resultado", resultado);
+		return "piratas/actualizarPiratas";
+	}
+	
 }

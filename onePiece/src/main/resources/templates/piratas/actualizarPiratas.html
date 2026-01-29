@@ -85,12 +85,12 @@
                                     <div class="col-md-6">
                                         <label for="frutaDiablo" class="form-label">Fruta del Diablo</label>
                                         <input type="text" class="form-control" name="frutaDiablo"
-                                            th:value="${pirata.frutaDiablo}">
+                                            th:value="${pirata.frutaDelDiablo}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento *</label>
                                         <input type="date" class="form-control" name="fechaNacimiento"
-                                            th:value="${pirata.fechaNacimiento}" required>
+                                            th:value="${pirata.fechaNacimiento}">
                                     </div>
                                 </div>
 
@@ -99,14 +99,14 @@
                                         <label for="isla" class="form-label">Isla de Origen *</label>
                                         <select class="form-select" name="isla" required>
                                             <option th:each="isla : ${desplegableIslas}" th:value="${isla.id}"
-                                                th:text="${isla.nombre}" th:selected="${isla.id == pirata.idIsla}">
+                                                th:text="${isla.descripcion}" th:selected="${isla.id == pirata.isla}">
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-check mt-4 pt-2">
                                             <input class="form-check-input" type="checkbox" name="activo" value="1"
-                                                th:checked="${pirata.activo == 1}">
+                                                th:checked="${pirata.estaActivo == 1}">
                                             <label class="form-check-label">Pirata Activo</label>
                                         </div>
                                     </div>

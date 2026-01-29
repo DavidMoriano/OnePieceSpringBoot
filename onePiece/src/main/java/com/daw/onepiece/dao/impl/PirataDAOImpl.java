@@ -44,4 +44,16 @@ public class PirataDAOImpl implements IPirataDAO {
 		return nuevoPirata.getId();
 	}
 
+	@Override
+	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, int activoInt) {
+		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));;
+		
+		pirata.setNombre(nombrePirata);
+		pirata.setFrutaDelDiablo(frutaDiablo);
+		pirata.setEstaActivo(activoInt);
+		
+		pirataRepo.save(pirata);
+		return pirata.getId();
+	}
+
 }
