@@ -12,5 +12,5 @@ public interface IPirataService {
 
 	int insertarPirata(String nombrePirata, String frutaDiablo, Date fechaFiltro, int idIsla, int activoInt);
 
-	int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, int activoInt);
+	int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, String idIsla, Date fechaFiltro, int activo);
 }

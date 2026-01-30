@@ -47,7 +47,8 @@ public class PirataController {
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
 
-		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, frutaNUll, activoInt);
+		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, frutaNUll,
+				activoInt);
 		model.addAttribute("lista", listaFiltrosPiratas);
 		return "piratas/listadoPiratas";
 	}
@@ -63,7 +64,8 @@ public class PirataController {
 	public String formularioInsertarPirata(@RequestParam(name = "nombre") String nombrePirata,
 			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
 			@RequestParam(name = "fechaNacimiento", required = false) String fecha,
-			@RequestParam(name = "islas") int idIsla, @RequestParam(name = "activo", required = false) String activo, ModelMap model) {
+			@RequestParam(name = "islas") int idIsla, @RequestParam(name = "activo", required = false) String activo,
+			ModelMap model) {
 
 		Date fechaFiltro = null;
 		if (fecha != null && !fecha.trim().isEmpty()) {
@@ -91,22 +93,20 @@ public class PirataController {
 		return "/piratas/insertarPirata";
 	}
 
-
 	@GetMapping("/formularioActualizarPiratas")
 	public String formularioPiratas() {
 		return "/piratas/actualizarPiratas";
 	}
-	
+
 	@PostMapping("/formularioActualizarPiratas")
 	public String formularioBuscarPiratas(@RequestParam(name = "id", required = false) Integer id,
 			@RequestParam(name = "nombre", required = false) String nombrePirata,
 			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
 			@RequestParam(name = "activo", required = false) String activo, ModelMap model) {
 
-
 		ArrayList<DesplegableDTO> desplegableIslas = desplegables.desplegableIslas();
-		model.addAttribute("isla", desplegableIslas);
-		
+		model.addAttribute("desplegableIslas", desplegableIslas);
+
 		String nombreNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
 		String frutaNUll = frutaDiablo == null || frutaDiablo.trim().isEmpty() ? null : frutaDiablo.trim();
 
@@ -116,19 +116,31 @@ public class PirataController {
 		model.addAttribute("lista", listaFiltrosPiratas);
 		return "piratas/actualizarPiratas";
 	}
-		
-	@PostMapping("/actualizarPiratas")
+
+	@PostMapping("/actualizarPirata")
 	public String actualizarPirata(@RequestParam(name = "id", required = false) Integer id,
 			@RequestParam(name = "nombre", required = false) String nombrePirata,
 			@RequestParam(name = "frutaDiablo", required = false) String frutaDiablo,
-			@RequestParam(name = "activo", required = false) String activo, ModelMap model) {
+			@RequestParam(name = "activo", required = false) String activo,
+			@RequestParam(name = "fechaNacimiento", required = false) String fecha,
+			@RequestParam(name = "isla", required = false) String idIsla, ModelMap model) {
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
+
+		Date fechaFiltro = null;
+		if (fecha != null && !fecha.trim().isEmpty()) {
+			try {
+				LocalDate localDate = LocalDate.parse(fecha.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
+				fechaFiltro = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			} catch (DateTimeParseException e) {
+				fechaFiltro = new Date();
+			}
+		}
 		
-		int resultado = piratasServ.actualizarPirata(id, nombrePirata, frutaDiablo, activoInt);
-		
+		int resultado = piratasServ.actualizarPirata(id, nombrePirata, frutaDiablo, idIsla, fechaFiltro, activoInt);
+
 		model.addAttribute("resultado", resultado);
 		return "piratas/actualizarPiratas";
 	}
-	
+
 }

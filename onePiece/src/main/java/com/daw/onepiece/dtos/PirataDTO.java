@@ -10,6 +10,7 @@ public class PirataDTO {
 	private Date fechaNacimiento;
 	private int estaActivo;
 	private String isla;
+	private int idIsla;
 	private String nombreTripulacion;
 
 	public PirataDTO(int id, String nombre, String frutaDelDiablo, String nombreTripulacion, Date fechaNacimiento,
@@ -20,6 +21,18 @@ public class PirataDTO {
 		this.nombreTripulacion = nombreTripulacion;
 		this.fechaNacimiento = fechaNacimiento;
 		this.isla = isla;
+		this.estaActivo = estaActivo;
+	}
+
+	public PirataDTO(int id, String nombre, String frutaDelDiablo, String nombreTripulacion, Date fechaNacimiento,
+			String isla, int idIsla, int estaActivo) {
+		this.id = id;
+		this.nombre = nombre;
+		this.frutaDelDiablo = frutaDelDiablo;
+		this.nombreTripulacion = nombreTripulacion;
+		this.fechaNacimiento = fechaNacimiento;
+		this.isla = isla;
+		this.idIsla = idIsla;
 		this.estaActivo = estaActivo;
 	}
 
@@ -81,5 +94,13 @@ public class PirataDTO {
 
 	public void setNombreTripulacion(String nombreTripulacion) {
 		this.nombreTripulacion = nombreTripulacion;
+	}
+
+	public int getIdIsla() {
+		return idIsla;
+	}
+
+	public void setIdIsla(int idIsla) {
+		this.idIsla = idIsla;
 	}
 }

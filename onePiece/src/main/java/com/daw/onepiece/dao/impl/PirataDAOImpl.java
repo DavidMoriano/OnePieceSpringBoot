@@ -35,7 +35,8 @@ public class PirataDAOImpl implements IPirataDAO {
 
 	@Override
 	public int insertarPirata(String nombrePirata, String frutaDiablo, Date fecha, int idIsla, int activoInt) {
-		IslaEntity isla = islaRepo.findById(idIsla).orElseThrow(() -> new IllegalArgumentException("Isla no encontrada: " + idIsla));
+		IslaEntity isla = islaRepo.findById(idIsla)
+				.orElseThrow(() -> new IllegalArgumentException("Isla no encontrada: " + idIsla));
 
 		PirataEntity nuevoPirata = new PirataEntity(nombrePirata, frutaDiablo, fecha, isla, activoInt);
 
@@ -43,14 +44,15 @@ public class PirataDAOImpl implements IPirataDAO {
 
 		return nuevoPirata.getId();
 	}
-
 	@Override
-	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, int activoInt) {
-		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));;
-		
+	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, String idIsla, Date fechaFiltro,
+			int activo) {
+		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
+
 		pirata.setNombre(nombrePirata);
 		pirata.setFrutaDelDiablo(frutaDiablo);
-		pirata.setEstaActivo(activoInt);
+		pirata.setEstaActivo(activo);
+		pirata.setFechaNacimiento(fechaFiltro);
 		
 		pirataRepo.save(pirata);
 		return pirata.getId();
