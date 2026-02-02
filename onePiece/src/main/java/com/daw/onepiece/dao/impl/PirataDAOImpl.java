@@ -58,4 +58,19 @@ public class PirataDAOImpl implements IPirataDAO {
 		return pirata.getId();
 	}
 
+	@Override
+	public int borrarPirata(Integer id) {
+		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
+
+		pirata.setEstaActivo(0);
+
+		pirataRepo.save(pirata);
+		return pirata.getId();
+	}
+
+	@Override
+	public ArrayList<PirataDTO> listarPiratasActivosNoEnTripulacion(Integer id) {
+		return pirataRepo.listarPiratasSinReclutamiento();
+	}
+
 }

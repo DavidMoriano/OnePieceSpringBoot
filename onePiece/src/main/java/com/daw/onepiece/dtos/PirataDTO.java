@@ -14,17 +14,6 @@ public class PirataDTO {
 	private String nombreTripulacion;
 
 	public PirataDTO(int id, String nombre, String frutaDelDiablo, String nombreTripulacion, Date fechaNacimiento,
-			String isla, int estaActivo) {
-		this.id = id;
-		this.nombre = nombre;
-		this.frutaDelDiablo = frutaDelDiablo;
-		this.nombreTripulacion = nombreTripulacion;
-		this.fechaNacimiento = fechaNacimiento;
-		this.isla = isla;
-		this.estaActivo = estaActivo;
-	}
-
-	public PirataDTO(int id, String nombre, String frutaDelDiablo, String nombreTripulacion, Date fechaNacimiento,
 			String isla, int idIsla, int estaActivo) {
 		this.id = id;
 		this.nombre = nombre;

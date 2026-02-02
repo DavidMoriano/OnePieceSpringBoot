@@ -18,6 +18,7 @@ public interface PirataRepository extends CrudRepository<PirataEntity, Integer> 
 			        t.nombre,
 			        p.fechaNacimiento,
 			        i.nombre,
+			        i.id,
 			        p.estaActivo
 			    )
 			    FROM PirataEntity p
@@ -28,13 +29,14 @@ public interface PirataRepository extends CrudRepository<PirataEntity, Integer> 
 	ArrayList<PirataDTO> listarTodosPiratasSinFiltros();
 
 	@Query("""
-				SELECT new com.daw.onepiece.dtos.PirataDTO(
+			    SELECT new com.daw.onepiece.dtos.PirataDTO(
 			        p.id,
 			        p.nombre,
 			        p.frutaDelDiablo,
 			        t.nombre,
 			        p.fechaNacimiento,
 			        i.nombre,
+			        i.id,
 			        p.estaActivo
 			    )
 			    FROM PirataEntity p
@@ -47,8 +49,52 @@ public interface PirataRepository extends CrudRepository<PirataEntity, Integer> 
 			    AND (:frutaDiablo IS NULL OR p.frutaDelDiablo = :frutaDiablo)
 			    AND (:activo IS NULL OR p.estaActivo = :activo)
 			""")
-
 	ArrayList<PirataDTO> listarPiratasConFiltros(@Param("idPirata") Integer id,
 			@Param("nombrePirata") String nombrePirata, @Param("frutaDiablo") String frutaDiablo,
 			@Param("activo") int activoInt);
+
+	@Query("""
+			    SELECT new com.daw.onepiece.dtos.PirataDTO(
+			        p.id,
+			        p.nombre,
+			        p.frutaDelDiablo,
+			        null,
+			        p.fechaNacimiento,
+			        i.nombre,
+			        i.id,
+			        p.estaActivo
+			    )
+			    FROM PirataEntity p
+			    LEFT JOIN p.isla i
+			    WHERE NOT EXISTS (
+			        SELECT 1
+			        FROM ReclutamientoEntity r
+			        WHERE r.pirata = p
+			    )
+			""")
+	ArrayList<PirataDTO> listarPiratasSinReclutamiento();
+
+	@Query("""
+			    SELECT new com.daw.onepiece.dtos.PirataDTO(
+			        p.id,
+			        p.nombre,
+			        p.frutaDelDiablo,
+			        null,
+			        p.fechaNacimiento,
+			        i.nombre,
+			        i.id,
+			        p.estaActivo
+			    )
+			    FROM PirataEntity p
+			    LEFT JOIN p.isla i
+			    WHERE NOT EXISTS (
+			        SELECT 1
+			        FROM ReclutamientoEntity r
+			        WHERE r.pirata = p
+			    )
+			    AND (:activo IS NULL OR p.estaActivo = :activo)
+			""")
+	ArrayList<PirataDTO> listarPiratasSinReclutamientoFiltradoPorActivo(@Param("activo") Integer activo);
+
+
 }

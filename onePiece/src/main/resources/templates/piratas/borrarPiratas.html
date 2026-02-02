@@ -70,13 +70,13 @@
                                     <tr th:each="pirata : ${lista}">
                                         <td th:text="${pirata.id}"></td>
                                         <td><strong th:text="${pirata.nombre}"></strong></td>
-                                        <td th:text="${pirata.frutaDiablo != null ? pirata.frutaDiablo : 'Sin fruta'}">
+                                        <td th:text="${pirata.frutaDelDiablo != null ? pirata.frutaDelDiablo : 'Sin fruta'}">
                                         </td>
-                                        <td th:text="${#temporals.format(pirata.fechaNacimiento, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${pirata.fechaNacimiento}"></td>
                                         <td th:text="${pirata.isla}"></td>
                                         <td>
-                                            <span th:if="${pirata.activo == 1}" class="badge bg-success">Activo</span>
-                                            <span th:if="${pirata.activo == 0}" class="badge bg-danger">
+                                            <span th:if="${pirata.estaActivo == 1}" class="badge bg-success">Activo</span>
+                                            <span th:if="${pirata.estaActivo == 0}" class="badge bg-danger">
                                                 Inactivo</span>
                                         </td>
                                         <td>

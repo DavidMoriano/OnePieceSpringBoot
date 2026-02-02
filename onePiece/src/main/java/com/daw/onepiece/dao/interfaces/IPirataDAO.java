@@ -15,4 +15,8 @@ public interface IPirataDAO {
 
 	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, String idIsla, Date fechaFiltro,
 			int activo);
+
+	public int borrarPirata(Integer id);
+
+	public ArrayList<PirataDTO> listarPiratasActivosNoEnTripulacion(Integer id);
 }

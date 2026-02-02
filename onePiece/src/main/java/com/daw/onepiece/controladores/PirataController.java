@@ -53,6 +53,8 @@ public class PirataController {
 		return "piratas/listadoPiratas";
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	@GetMapping("/insertarPirata")
 	public String insertarPirata(ModelMap model) {
 		ArrayList<DesplegableDTO> desplegableIslas = desplegables.desplegableIslas();
@@ -77,8 +79,6 @@ public class PirataController {
 			}
 		}
 
-		System.out.println("activo form: " + activo);
-
 		String frutaDiabloPosibleNull = frutaDiablo == null || frutaDiablo.trim().isEmpty() ? null : frutaDiablo.trim();
 		String nombrePirataPosibleNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null
 				: nombrePirata.trim();
@@ -92,6 +92,8 @@ public class PirataController {
 
 		return "/piratas/insertarPirata";
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@GetMapping("/formularioActualizarPiratas")
 	public String formularioPiratas() {
@@ -127,6 +129,8 @@ public class PirataController {
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
 
+		String nombreNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
+
 		Date fechaFiltro = null;
 		if (fecha != null && !fecha.trim().isEmpty()) {
 			try {
@@ -136,11 +140,38 @@ public class PirataController {
 				fechaFiltro = new Date();
 			}
 		}
-		
-		int resultado = piratasServ.actualizarPirata(id, nombrePirata, frutaDiablo, idIsla, fechaFiltro, activoInt);
+
+		int resultado = piratasServ.actualizarPirata(id, nombreNull, frutaDiablo, idIsla, fechaFiltro, activoInt);
 
 		model.addAttribute("resultado", resultado);
 		return "piratas/actualizarPiratas";
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@GetMapping("/formularioBorrarPiratas")
+	public String formularioBorrarPiratas() {
+		return "piratas/borrarPiratas";
+	}
+
+	@PostMapping("/formularioBorrarPiratas")
+	public String listadoBorrarPiratas(@RequestParam(name = "id", required = false) Integer id,
+			@RequestParam(name = "nombre", required = false) String nombrePirata, ModelMap model) {
+
+		String nombreNull = nombrePirata == null || nombrePirata.trim().isEmpty() ? null : nombrePirata.trim();
+
+		ArrayList<PirataDTO> listaFiltrosPiratas = piratasServ.listarPiratasFiltros(id, nombreNull, null, 1);
+		model.addAttribute("lista", listaFiltrosPiratas);
+
+		return "piratas/borrarPiratas";
+	}
+
+	@PostMapping("/borrarPirata")
+	public String ponerActivoCeroPirata(@RequestParam(name = "id") Integer id, ModelMap model) {
+		int pirataBorrado = piratasServ.borrarPirata(id);
+		model.addAttribute("resultado", pirataBorrado);
+
+		return "piratas/borrarPiratas";
 	}
 
 }
