@@ -43,8 +43,7 @@ public class TripulacionController {
 
 		int activoInt = "on".equals(activo) || "true".equalsIgnoreCase(activo) || "1".equals(activo) ? 1 : 0;
 
-		ArrayList<TripulacionDTO> listaFiltrada = tripulacionService.listarTripulacionesFiltros(nombreFiltro,
-				barcoFiltro, activoInt);
+		ArrayList<TripulacionDTO> listaFiltrada = tripulacionService.listarTripulacionesFiltros(nombreFiltro, barcoFiltro, activoInt);
 		model.addAttribute("lista", listaFiltrada);
 		return "tripulaciones/listadoTripulaciones";
 	}
@@ -142,9 +141,7 @@ public class TripulacionController {
 
 		String nombreLimpio = nombre.trim();
 		String barcoLimpio = barco.trim();
-		int activa = "on".equals(estaActivaStr) || "true".equalsIgnoreCase(estaActivaStr) || "1".equals(estaActivaStr)
-				? 1
-				: 0;
+		int activa = "on".equals(estaActivaStr) || "true".equalsIgnoreCase(estaActivaStr) || "1".equals(estaActivaStr) ? 1 : 0;
 
 		int filasAfectadas = tripulacionService.actualizarTripulacion(id, nombreLimpio, barcoLimpio, activa);
 
@@ -163,7 +160,7 @@ public class TripulacionController {
 
 		String nombreFiltro = (nombre == null || nombre.trim().isEmpty()) ? null : nombre.trim();
 
-		ArrayList<TripulacionDTO> lista = tripulacionService.listarTripulacionesFiltros(nombreFiltro, null, null);
+		ArrayList<TripulacionDTO> lista = tripulacionService.listarTripulacionesFiltros(nombreFiltro, null, 1);
 		model.addAttribute("lista", lista);
 
 		return "tripulaciones/borrarTripulaciones";

@@ -50,10 +50,17 @@ public class TripulacionDAOImpl implements ITripulacionDAO {
 
     @Override
     public TripulacionDTO obtenerTripulacionPorId(Integer id) {
-        return tripulacionRepo.buscarTripulacionesFiltradas(id, null, null, null, null)
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
+        return tripulacionRepo.findById(id)
+                .map(entity -> {
+                    int cantidad = reclutamientoRepo.contarMiembrosActivos(id);
+                    return new TripulacionDTO(
+                        entity.getId(),
+                        entity.getNombre(),
+                        entity.getBarco(),
+                        entity.getEstaActiva(),
+                        cantidad
+                    );
+                })
                 .orElse(null);
     }
 

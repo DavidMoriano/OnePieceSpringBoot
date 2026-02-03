@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.daw.onepiece.dao.interfaces.ITripulacionDAO;
 import com.daw.onepiece.dtos.MiembroTripulacionDTO;
-import com.daw.onepiece.dtos.PirataDTO;
 import com.daw.onepiece.dtos.TripulacionDTO;
 import com.daw.onepiece.servicio.interfaces.ITripulacionService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TripulacionServiceImpl implements ITripulacionService {
@@ -37,11 +38,13 @@ public class TripulacionServiceImpl implements ITripulacionService {
         return tripuDAO.obtenerMiembrosActivosPorTripulacion(id);
     }
 
+    @Transactional
     @Override
     public void agregarMiembroATripulacion(Integer idPirata, Integer idTripulacion, String rolLimpio) {
         tripuDAO.agregarMiembro(idPirata, idTripulacion, rolLimpio);
     }
 
+    @Transactional
     @Override
     public void eliminarMiembroDeTripulacion(Integer idPirata, Integer idTripulacion) {
         tripuDAO.eliminarMiembro(idPirata, idTripulacion);
