@@ -13,56 +13,53 @@ import com.daw.onepiece.entities.TripulacionEntity;
 @Repository
 public interface TripulacionRepository extends CrudRepository<TripulacionEntity, Integer> {
 
-    
-    @Query("""
-        SELECT new com.daw.onepiece.dtos.TripulacionDTO(
-            t.id,
-            t.nombre,
-            t.barco,
-            t.estaActiva,
-            CAST(COALESCE(COUNT(r.id), 0) AS int)
-        )
-        FROM TripulacionEntity t
-        LEFT JOIN ReclutamientoEntity r 
-            ON r.tripulacion = t 
-            AND r.esMiembroActual = 1
-        GROUP BY t.id, t.nombre, t.barco, t.estaActiva
-        ORDER BY t.nombre
-    """)
-    ArrayList<TripulacionDTO> findAllConCantidadReclutados();
+	@Query("""
+			    SELECT new com.daw.onepiece.dtos.TripulacionDTO(
+			        t.id,
+			        t.nombre,
+			        t.barco,
+			        t.estaActiva,
+			        CAST(COALESCE(COUNT(r.id), 0) AS int)
+			    )
+			    FROM TripulacionEntity t
+			    LEFT JOIN ReclutamientoEntity r
+			        ON r.tripulacion = t
+			        AND r.esMiembroActual = 1
+			    GROUP BY t.id, t.nombre, t.barco, t.estaActiva
+			    ORDER BY t.nombre
+			""")
+	ArrayList<TripulacionDTO> findAllConCantidadReclutados();
 
-    @Query("""
-        SELECT new com.daw.onepiece.dtos.TripulacionDTO(
-            t.id,
-            t.nombre,
-            t.barco,
-            t.estaActiva,
-            CAST(COALESCE(COUNT(r.id), 0) AS int)
-        )
-        FROM TripulacionEntity t
-        LEFT JOIN ReclutamientoEntity r 
-            ON r.tripulacion = t 
-            AND r.esMiembroActual = 1
-        WHERE (:idPirata IS NULL OR EXISTS (
-            SELECT 1 FROM ReclutamientoEntity rec 
-            WHERE rec.tripulacion = t AND rec.pirata.id = :idPirata
-        ))
-        AND (:pirataNombre IS NULL OR EXISTS (
-            SELECT 1 FROM ReclutamientoEntity rec2 
-            WHERE rec2.tripulacion = t 
-            AND LOWER(rec2.pirata.nombre) LIKE LOWER(CONCAT('%', :pirataNombre, '%'))
-        ))
-        AND (:barco IS NULL OR LOWER(t.barco) LIKE LOWER(CONCAT('%', :barco, '%')))
-        AND (:activo IS NULL OR t.estaActiva = :activo)
-        GROUP BY t.id, t.nombre, t.barco, t.estaActiva
-        HAVING (:minReclutados IS NULL OR CAST(COALESCE(COUNT(r.id), 0) AS int) >= :minReclutados)
-        ORDER BY t.nombre
-    """)
-    ArrayList<TripulacionDTO> buscarTripulacionesFiltradas(
-            @Param("idPirata") Integer idPirata,
-            @Param("pirataNombre") String pirataNombre,
-            @Param("barco") String barco,
-            @Param("activo") Integer activo,
-            @Param("minReclutados") Integer minReclutados
-    );
+	@Query("""
+	        SELECT new com.daw.onepiece.dtos.TripulacionDTO(
+	            t.id,
+	            t.nombre,
+	            t.barco,
+	            t.estaActiva,
+	            CAST(COALESCE(COUNT(r.id), 0) AS int)
+	        )
+	        FROM TripulacionEntity t
+	        LEFT JOIN ReclutamientoEntity r
+	            ON r.tripulacion = t
+	            AND r.esMiembroActual = 1
+	        WHERE t.estaActiva = :activo
+	          AND (:idPirata IS NULL OR EXISTS (
+	              SELECT 1 FROM ReclutamientoEntity rec
+	              WHERE rec.tripulacion = t AND rec.pirata.id = :idPirata
+	          ))
+	          AND (:pirataNombre IS NULL OR EXISTS (
+	              SELECT 1 FROM ReclutamientoEntity rec2
+	              WHERE rec2.tripulacion = t
+	              AND LOWER(rec2.pirata.nombre) LIKE LOWER(CONCAT('%', :pirataNombre, '%'))
+	          ))
+	          AND (:barco IS NULL OR LOWER(t.barco) LIKE LOWER(CONCAT('%', :barco, '%')))
+	        GROUP BY t.id, t.nombre, t.barco, t.estaActiva
+	        ORDER BY t.nombre
+	    """)
+	    ArrayList<TripulacionDTO> buscarTripulacionesFiltradas(
+	            @Param("idPirata") Integer idPirata,
+	            @Param("pirataNombre") String pirataNombre,
+	            @Param("barco") String barco,
+	            @Param("activo") Integer activo
+	    );
 }

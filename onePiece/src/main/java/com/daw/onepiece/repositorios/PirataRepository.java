@@ -43,11 +43,10 @@ public interface PirataRepository extends CrudRepository<PirataEntity, Integer> 
 			    LEFT JOIN p.isla i
 			    LEFT JOIN p.reclutamiento r
 			    LEFT JOIN r.tripulacion t
-			    WHERE
-			        (:idPirata IS NULL OR p.id = :idPirata)
-			    AND (:nombrePirata IS NULL OR p.nombre = :nombrePirata)
-			    AND (:frutaDiablo IS NULL OR p.frutaDelDiablo = :frutaDiablo)
-			    AND (:activo IS NULL OR p.estaActivo = :activo)
+			    WHERE p.estaActivo = :activo
+			      AND (:idPirata   IS NULL OR p.id = :idPirata)
+			      AND (:nombrePirata   IS NULL OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombrePirata, '%')))
+			      AND (:frutaDiablo IS NULL OR LOWER(p.frutaDelDiablo) LIKE LOWER(CONCAT('%', :frutaDiablo, '%')))
 			""")
 	ArrayList<PirataDTO> listarPiratasConFiltros(@Param("idPirata") Integer id,
 			@Param("nombrePirata") String nombrePirata, @Param("frutaDiablo") String frutaDiablo,
@@ -95,6 +94,5 @@ public interface PirataRepository extends CrudRepository<PirataEntity, Integer> 
 			    AND (:activo IS NULL OR p.estaActivo = :activo)
 			""")
 	ArrayList<PirataDTO> listarPiratasSinReclutamientoFiltradoPorActivo(@Param("activo") Integer activo);
-
 
 }

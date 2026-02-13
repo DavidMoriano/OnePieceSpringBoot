@@ -19,4 +19,6 @@ public interface IPirataDAO {
 	public int borrarPirata(Integer id);
 
 	public ArrayList<PirataDTO> listarPiratasActivosNoEnTripulacion(Integer id);
+
+	public PirataDTO obtenerPirataPorId(Integer id);
 }

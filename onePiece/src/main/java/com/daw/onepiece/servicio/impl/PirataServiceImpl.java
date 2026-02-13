@@ -49,5 +49,11 @@ public class PirataServiceImpl implements IPirataService {
 		return pirataDAO.listarPiratasActivosNoEnTripulacion(id);
 	}
 
+
+	@Override
+	public PirataDTO obtenerPirataPorId(Integer id) {
+		return pirataDAO.obtenerPirataPorId(id);
+	}
+
 	
 }

@@ -35,7 +35,7 @@ public class TripulacionDAOImpl implements ITripulacionDAO {
 
     @Override
     public ArrayList<TripulacionDTO> listarTripulacionesConFiltros(String nombre, String barco, Integer estaActivo) {
-        return tripulacionRepo.buscarTripulacionesFiltradas(null, nombre, barco, estaActivo, null);
+        return tripulacionRepo.buscarTripulacionesFiltradas(null, nombre, barco, estaActivo);
     }
 
     @Override

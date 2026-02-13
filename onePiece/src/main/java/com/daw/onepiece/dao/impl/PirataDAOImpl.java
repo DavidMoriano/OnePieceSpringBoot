@@ -28,6 +28,22 @@ public class PirataDAOImpl implements IPirataDAO {
 	}
 
 	@Override
+	public PirataDTO obtenerPirataPorId(Integer id) {
+	    return pirataRepo.findById(id)
+	            .map(entity -> new PirataDTO(
+	                entity.getId(),
+	                entity.getNombre(),
+	                entity.getFrutaDelDiablo(),
+	                null,
+	                entity.getFechaNacimiento(),
+	                entity.getIsla() != null ? entity.getIsla().getNombre() : null,
+	                entity.getIsla() != null ? entity.getIsla().getId() : 0,
+	                entity.isEstaActivo()
+	            ))
+	            .orElse(null);
+	}
+
+	@Override
 	public ArrayList<PirataDTO> listarPiratasConFiltros(Integer id, String nombrePirata, String frutaDiablo,
 			int activoInt) {
 		return pirataRepo.listarPiratasConFiltros(id, nombrePirata, frutaDiablo, activoInt);
@@ -44,23 +60,26 @@ public class PirataDAOImpl implements IPirataDAO {
 
 		return nuevoPirata.getId();
 	}
+
 	@Override
 	public int actualizarPirata(Integer id, String nombrePirata, String frutaDiablo, String idIsla, Date fechaFiltro,
 			int activo) {
-		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
+		PirataEntity pirata = pirataRepo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
 
 		pirata.setNombre(nombrePirata);
 		pirata.setFrutaDelDiablo(frutaDiablo);
 		pirata.setEstaActivo(activo);
 		pirata.setFechaNacimiento(fechaFiltro);
-		
+
 		pirataRepo.save(pirata);
 		return pirata.getId();
 	}
 
 	@Override
 	public int borrarPirata(Integer id) {
-		PirataEntity pirata = pirataRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
+		PirataEntity pirata = pirataRepo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Piarata no encontrado: " + id));
 
 		pirata.setEstaActivo(0);
 

@@ -23,7 +23,6 @@
                         <h4 class="mb-0">Formulario de Registro</h4>
                     </div>
                     <div class="card-body p-4">
-                        <!-- Mensaje de resultado -->
                         <div th:if="${resultado != null and resultado != 0}" class="alert alert-success alert-marine"
                             role="alert">
                             <strong>¡Éxito!</strong> Pirata registrado correctamente con ID: <span
@@ -52,8 +51,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento *</label>
-                                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento"
-                                        required>
+                                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
                                 </div>
                             </div>
 
@@ -62,15 +60,15 @@
                                     <label for="islas" class="form-label">Isla de Origen *</label>
                                     <select class="form-select" id="islas" name="islas" required>
                                         <option value="">Selecciona una isla...</option>
-                                        <option th:each="isla : ${desplegableIslas}" th:value="${isla.id}"
-                                            th:text="${isla.nombre}">
+                                        <option th:each="isla : ${desplegableIslas}" 
+                                            th:value="${isla.id}"
+                                            th:text="${isla.descripcion}">
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-check mt-4 pt-2">
-                                        <input class="form-check-input" type="checkbox" id="activo" name="activo"
-                                            value="1" checked>
+                                        <input class="form-check-input" type="checkbox" id="activo" name="activo" value="1" checked>
                                         <label class="form-check-label" for="activo">
                                             Pirata Activo
                                         </label>
